@@ -1,0 +1,10 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_1='/home/chris/Workspace/webdev/docupop/api'
+let g:netrw_dirhist_2='/home/chris/Workspace/webdev/docupop/common'
+let g:netrw_dirhist_3='/home/chris/Workspace/webdev/docupop/common/src'
+let g:netrw_dirhist_4='/home/chris/Workspace/webdev/docupop/api'
+let g:netrw_dirhist_5='/home/chris/Workspace/webdev/docupop/common'
+let g:netrw_dirhist_6='/home/chris/Workspace/webdev/docupop/api'
+let g:netrw_dirhist_7='/home/chris/Workspace/webdev/docupop'
+let g:netrw_dirhist_8='/home/chris/Workspace/webdev/docupop/api'
