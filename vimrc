@@ -378,12 +378,14 @@ call plug#begin('~/.vim/plugged')
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'quabug/vim-gdscript'
 Plug 'embear/vim-localvimrc'
+Plug 'mileszs/ack.vim'
 call plug#end()
 
 map <leader>y :FZF<cr>
 map <leader>s :vsplit<cr>
 map <leader>d :hsplit<cr>
 map <leader>= <C-W>
+map <leader>/ :Ack<space>
 
 set splitbelow
 set splitright
