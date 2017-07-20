@@ -374,11 +374,32 @@ function! <SID>BufcloseCloseIt()
    endif
 endfunction
 
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", "\\/.*'$^~[]")
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'gv'
+        call CmdLine("Ack '" . l:pattern . "' " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'quabug/vim-gdscript'
 Plug 'embear/vim-localvimrc'
 Plug 'mileszs/ack.vim'
+Plug 'vim-syntastic/syntastic'
+Plug 'airblade/vim-gitgutter'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'vim-airline/vim-airline'
 call plug#end()
 
 map <leader>y :FZF<cr>
@@ -386,7 +407,17 @@ map <leader>s :vsplit<cr>
 map <leader>d :hsplit<cr>
 map <leader>= <C-W>
 map <leader>/ :Ack<space>
+map <leader>G :!git<space>
 
 set splitbelow
 set splitright
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 
