@@ -401,6 +401,7 @@ Plug 'vim-syntastic/syntastic'
 Plug 'airblade/vim-gitgutter'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'vim-airline/vim-airline'
+Plug 'ejholmes/vim-forcedotcom'
 call plug#end()
 
 map <leader>y :FZF<cr>
