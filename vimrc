@@ -394,6 +394,7 @@ endfunction
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'quabug/vim-gdscript'
+Plug 'pangloss/vim-javascript'
 Plug 'embear/vim-localvimrc'
 Plug 'mileszs/ack.vim'
 Plug 'vim-syntastic/syntastic'
@@ -404,20 +405,20 @@ call plug#end()
 
 map <leader>y :FZF<cr>
 map <leader>s :vsplit<cr>
-map <leader>d :hsplit<cr>
+map <leader>d :split<cr>
 map <leader>= <C-W>
 map <leader>/ :Ack<space>
 map <leader>G :!git<space>
+map <leader>; %
 
 set splitbelow
 set splitright
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+set updatetime=250
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
+let g:localvimrc_persistent = 1
