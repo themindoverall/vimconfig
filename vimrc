@@ -393,6 +393,7 @@ endfunction
 
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'quabug/vim-gdscript'
 Plug 'pangloss/vim-javascript'
 Plug 'rust-lang/rust.vim'
@@ -403,9 +404,11 @@ Plug 'airblade/vim-gitgutter'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'vim-airline/vim-airline'
 Plug 'ejholmes/vim-forcedotcom'
+Plug 'valloric/youcompleteme'
 call plug#end()
 
-map <leader>y :FZF<cr>
+map <leader>y :Files<cr>
+map <leader>e :Windows<cr>
 map <leader>s :vsplit<cr>
 map <leader>d :split<cr>
 map <leader>= <C-W>
