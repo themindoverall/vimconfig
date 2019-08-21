@@ -396,7 +396,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'quabug/vim-gdscript'
 Plug 'pangloss/vim-javascript'
-Plug 'rust-lang/rust.vim'
+Plug 'leafgarland/typescript-vim'
 Plug 'embear/vim-localvimrc'
 Plug 'mileszs/ack.vim'
 Plug 'vim-syntastic/syntastic'
