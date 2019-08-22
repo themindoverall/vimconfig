@@ -410,7 +410,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
+  \ 'do': 'npm install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 call plug#end()
 
@@ -443,6 +443,8 @@ set relativenumber
 
 set listchars=eol:↲,tab:⇥\ ,trail:~,extends:•,precedes:<,space:·
 set list
+
+set mouse=a
 
 highlight SpecialKey cterm=NONE ctermfg=238 gui=NONE guifg=#00005f
 highlight NonText cterm=NONE ctermfg=238 gui=NONE guifg=#00005f
