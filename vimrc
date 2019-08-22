@@ -228,6 +228,7 @@ map <leader><leader>j <C-W>j
 map <leader><leader>k <C-W>k
 map <leader><leader>h <C-W>h
 map <leader><leader>l <C-W>l
+map <leader><leader>c <C-W>c
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>:tabclose<cr>gT
