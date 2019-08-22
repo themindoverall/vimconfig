@@ -152,10 +152,10 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-try
-    colorscheme deus
-catch
-endtry
+" try
+"     colorscheme banana
+" catch
+" endtry
 
 set background=dark
 
@@ -400,7 +400,6 @@ Plug 'leafgarland/typescript-vim'
 Plug 'embear/vim-localvimrc'
 Plug 'mileszs/ack.vim'
 Plug 'airblade/vim-gitgutter'
-Plug 'terryma/vim-multiple-cursors'
 Plug 'vim-airline/vim-airline'
 Plug 'ejholmes/vim-forcedotcom'
 Plug 'valloric/youcompleteme'
@@ -412,7 +411,12 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+Plug 'tomasiser/vim-code-dark'
+Plug 'scrooloose/nerdtree'
 call plug#end()
+
+colorscheme codedark
+let g:airline_theme = 'codedark'
 
 map <leader>y :GFiles<cr>
 map <leader>e :Windows<cr>
@@ -422,6 +426,8 @@ map <leader>= <C-W>
 map <leader>/ :Ack<space>
 map <leader>G :!git<space>
 map <leader>; %
+nmap <leader>8 *``
+map <C-n> :NERDTreeToggle<CR>
 
 nnoremap <leader>j :m .+1<CR>==
 nnoremap <leader>k :m .-2<CR>==
