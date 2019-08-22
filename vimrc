@@ -153,7 +153,7 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 try
-    colorscheme desert
+    colorscheme deus
 catch
 endtry
 
@@ -188,7 +188,6 @@ set noswapfile
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use spaces instead of tabs
 set expandtab
-
 " Be smart when using tabs ;)
 set smarttab
 
@@ -225,10 +224,10 @@ map <c-space> ?
 map <silent> <leader><cr> :noh<cr>
 
 " Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+map <leader><leader>j <C-W>j
+map <leader><leader>k <C-W>k
+map <leader><leader>h <C-W>h
+map <leader><leader>l <C-W>l
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>:tabclose<cr>gT
@@ -399,15 +398,22 @@ Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'embear/vim-localvimrc'
 Plug 'mileszs/ack.vim'
-Plug 'vim-syntastic/syntastic'
 Plug 'airblade/vim-gitgutter'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'vim-airline/vim-airline'
 Plug 'ejholmes/vim-forcedotcom'
 Plug 'valloric/youcompleteme'
+Plug 'dense-analysis/ale'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-commentary'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 call plug#end()
 
-map <leader>y :Files<cr>
+map <leader>y :GFiles<cr>
 map <leader>e :Windows<cr>
 map <leader>s :vsplit<cr>
 map <leader>d :split<cr>
@@ -416,14 +422,34 @@ map <leader>/ :Ack<space>
 map <leader>G :!git<space>
 map <leader>; %
 
+nnoremap <leader>j :m .+1<CR>==
+nnoremap <leader>k :m .-2<CR>==
+inoremap <leader>j <Esc>:m .+1<CR>==gi
+inoremap <leader>k <Esc>:m .-2<CR>==gi
+vnoremap <leader>j :m '>+1<CR>gv=gv
+vnoremap <leader>k :m '<-2<CR>gv=gv
+
 set splitbelow
 set splitright
 
 set updatetime=250
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+set signcolumn=yes
+set number
+set relativenumber
+
+"    this is a test;
+
+set listchars=eol:↲,tab:⇥\ ,trail:~,extends:•,precedes:<,space:·
+set list
+
+highlight SpecialKey cterm=NONE ctermfg=238 gui=NONE guifg=#00005f
+highlight NonText cterm=NONE ctermfg=238 gui=NONE guifg=#00005f
 
 let g:localvimrc_persistent = 1
+let g:prettier#exec_cmd_async = 1
+
+" add to ~/.zshrc:
+" alias vim="nvim"
+" alias vi="nvim"
+
