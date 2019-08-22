@@ -407,6 +407,7 @@ Plug 'dense-analysis/ale'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install',
@@ -417,6 +418,8 @@ call plug#end()
 
 colorscheme codedark
 let g:airline_theme = 'codedark'
+
+let NERDTreeShowLineNumbers=1
 
 map <leader>y :GFiles<cr>
 map <leader>e :Windows<cr>
@@ -438,6 +441,7 @@ vnoremap <leader>k :m '<-2<CR>gv=gv
 
 set splitbelow
 set splitright
+set diffopt+=vertical
 
 set updatetime=250
 
