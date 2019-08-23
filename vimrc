@@ -396,14 +396,17 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'quabug/vim-gdscript'
 Plug 'pangloss/vim-javascript'
-Plug 'leafgarland/typescript-vim'
 Plug 'embear/vim-localvimrc'
 Plug 'mileszs/ack.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
 Plug 'ejholmes/vim-forcedotcom'
-Plug 'valloric/youcompleteme'
-Plug 'dense-analysis/ale'
+Plug 'othree/yajs.vim'
+Plug 'HerringtonDarkholme/yats.vim'
+Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
+Plug 'ncm2/ncm2'
+Plug 'ncm2/ncm2-path'
+Plug 'roxma/nvim-yarp'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
@@ -420,6 +423,18 @@ colorscheme codedark
 let g:airline_theme = 'codedark'
 
 let NERDTreeShowLineNumbers=1
+" enable ncm2 for all buffers
+autocmd BufEnter * call ncm2#enable_for_buffer()
+
+" IMPORTANT: :help Ncm2PopupOpen for more information
+set completeopt=noinsert,menuone,noselect
+" suppress the annoying 'match x of y', 'The only match' and 'Pattern not
+" found' messages
+set shortmess+=c
+
+" Use <TAB> to select the popup menu:
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 map <leader>y :GFiles<cr>
 map <leader>e :Windows<cr>
@@ -458,6 +473,40 @@ set mouse=a
 
 highlight SpecialKey cterm=NONE ctermfg=238 gui=NONE guifg=#00005f
 highlight NonText cterm=NONE ctermfg=238 gui=NONE guifg=#00005f
+
+highlight Warning cterm=NONE ctermfg=221 gui=NONE guifg=#ffd75f
+highlight WarningMsg cterm=undercurl ctermfg=221 gui=undercurl guifg=#ffd75f
+
+let g:nvim_typescript#default_signs = [
+      \  {
+      \  'TSerror': {
+      \   'texthl': 'ErrorMsg',
+      \   'signText': 'x',
+      \   'signTexthl': 'Error'
+      \  }
+      \},
+      \{
+      \  'TSwarning': {
+      \   'texthl': 'WarningMsg',
+      \   'signText': '•',
+      \   'signTexthl': 'Warning'
+      \  }
+      \},
+      \{
+      \  'TSsuggestion': {
+      \   'texthl': 'SpellBad',
+      \   'signText': '•',
+      \   'signTexthl': 'Directory'
+      \   }
+      \},
+      \{
+      \  'TShint': {
+      \   'texthl': 'SpellBad',
+      \   'signText': '?',
+      \   'signTexthl': 'Directory'
+      \   }
+      \}
+      \]
 
 let g:localvimrc_persistent = 1
 let g:prettier#exec_cmd_async = 1
