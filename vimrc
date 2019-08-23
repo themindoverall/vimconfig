@@ -157,7 +157,6 @@ endif
 " catch
 " endtry
 
-set background=dark
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -444,7 +443,7 @@ map <leader>= <C-W>
 map <leader>/ :Ack<space>
 map <leader>G :!git<space>
 map <leader>; %
-nmap <leader>8 *``
+map <leader>8 *``
 map <C-n> :NERDTreeToggle<CR>
 
 nnoremap <leader>j :m .+1<CR>==
@@ -473,6 +472,8 @@ set mouse=a
 
 highlight SpecialKey cterm=NONE ctermfg=238 gui=NONE guifg=#00005f
 highlight NonText cterm=NONE ctermfg=238 gui=NONE guifg=#00005f
+highlight IncSearch ctermbg=238 gui=NONE guibg=#49545F
+highlight Search ctermbg=238 gui=NONE guibg=#4C4E50
 
 highlight Warning cterm=NONE ctermfg=221 gui=NONE guifg=#ffd75f
 highlight WarningMsg cterm=undercurl ctermfg=221 gui=undercurl guifg=#ffd75f
