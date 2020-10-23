@@ -440,6 +440,8 @@ map <leader>/ :Ack<space>
 map <leader>G :!git<space>
 map <leader>; %
 map <leader>8 *``
+map <leader>9 *``ciw
+map <leader>? :TSType<cr>
 map <C-n> :NERDTreeToggle<CR>
 
 nnoremap <leader>j :m .+1<CR>==
@@ -509,6 +511,7 @@ let g:nvim_typescript#default_signs = [
       \}
       \]
 
+let g:nvim_typescript#javascript_support = 1
 let g:localvimrc_persistent = 1
 let g:prettier#exec_cmd_async = 1
 
