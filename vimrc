@@ -191,8 +191,8 @@ set expandtab
 set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 
 " Linebreak on 500 characters
 set lbr
@@ -308,7 +308,7 @@ fun! CleanExtraSpaces()
 endfun
 
 if has("autocmd")
-    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
+    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee,*.ts,*.go :call CleanExtraSpaces()
 endif
 
 
@@ -394,23 +394,11 @@ call plug#begin('~/.vim/plugged')
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'quabug/vim-gdscript'
-Plug 'pangloss/vim-javascript'
 Plug 'embear/vim-localvimrc'
 Plug 'mileszs/ack.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
 Plug 'ejholmes/vim-forcedotcom'
-Plug 'othree/yajs.vim'
-Plug 'HerringtonDarkholme/yats.vim'
-Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
-
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
 
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -422,16 +410,178 @@ Plug 'prettier/vim-prettier', {
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 Plug 'tomasiser/vim-code-dark'
 Plug 'scrooloose/nerdtree'
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/nvim-compe'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'p00f/nvim-ts-rainbow'
 call plug#end()
+
+if has("termguicolors")
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
 
 colorscheme codedark
 let g:airline_theme = 'codedark'
 
 let NERDTreeShowLineNumbers=1
 
-let g:deoplete#enable_at_startup = 1
+highlight LspDiagnosticsDefaultError cterm=NONE ctermfg=196 gui=none guifg=#d70000
+highlight LspDiagnosticsDefaultWarning cterm=NONE ctermfg=221 gui=NONE guifg=#ffd75f
+highlight LspDiagnosticsDefaultInformation cterm=NONE ctermfg=111 gui=NONE guifg=#87afff
+highlight LspDiagnosticsDefaultHint cterm=NONE ctermfg=249 gui=NONE guifg=#b2b2b2
+highlight SpecialKey cterm=NONE ctermfg=238 gui=NONE guifg=#444444
+highlight NonText cterm=NONE ctermfg=238 gui=NONE guifg=#444444
+highlight IncSearch ctermbg=238 gui=NONE guibg=#444444
+highlight Search ctermbg=238 gui=NONE guibg=#444444
 
-map <leader>y :GFiles<cr>
+" highlight Warning cterm=NONE ctermfg=221 gui=NONE guifg=#ffd75f
+" highlight WarningMsg cterm=undercurl ctermfg=221 gui=undercurl guifg=#ffd75f
+
+
+lua << EOF
+local nvim_lsp = require('lspconfig')
+-- local completion = require('completion')
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- completion.on_attach()
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+
+  -- Set some keybinds conditional on server capabilities
+  if client.resolved_capabilities.document_formatting then
+    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  elseif client.resolved_capabilities.document_range_formatting then
+    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+  end
+
+  -- Set autocommands conditional on server_capabilities
+  if client.resolved_capabilities.document_highlight then
+    vim.api.nvim_exec([[
+      hi LspReferenceRead cterm=bold ctermbg=238 guibg=#444444
+      hi LspReferenceText cterm=bold ctermbg=238 guibg=#444444
+      hi LspReferenceWrite cterm=bold ctermbg=238 guibg=#444444
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+    ]], false)
+  end
+end
+
+-- Use a loop to conveniently both setup defined servers 
+-- and map buffer local keybindings when the language server attaches
+local servers = { "gopls", "tsserver" }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup { on_attach = on_attach }
+end
+
+vim.fn.sign_define("LspDiagnosticsSignError", {
+    texthl = "LspDiagnosticsSignError",
+    text = "x",
+    numhl = "LspDiagnosticsSignError"
+})
+vim.fn.sign_define("LspDiagnosticsSignWarning", {
+    texthl = "LspDiagnosticsSignWarning",
+    text = "?",
+    numhl = "LspDiagnosticsSignWarning"
+})
+vim.fn.sign_define("LspDiagnosticsSignInformation", {
+    texthl = "LspDiagnosticsSignInformation",
+    text = "i",
+    numhl = "LspDiagnosticsSignInformation"
+})
+vim.fn.sign_define("LspDiagnosticsSignHint", {
+    texthl = "LspDiagnosticsSignHint",
+    text = "!",
+    numhl = "LspDiagnosticsSignHint"
+})
+EOF
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = {"typescript"}, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+  },
+  rainbow = {
+    enable = true,
+  },
+}
+EOF
+
+" Use <Tab> and <S-Tab> to navigate through popup menu
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" imap <tab> <Plug>(completion_smart_tab)
+" imap <s-tab> <Plug>(completion_smart_s_tab)
+
+" Set completeopt to have a better completion experience
+set completeopt=menuone,noinsert,noselect
+" let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
+
+" Avoid showing message extra message when using completion
+set shortmess+=c
+
+let g:compe = {}
+let g:compe.enabled = v:true
+let g:compe.autocomplete = v:true
+let g:compe.debug = v:false
+let g:compe.min_length = 1
+let g:compe.preselect = 'enable'
+let g:compe.throttle_time = 80
+let g:compe.source_timeout = 200
+let g:compe.incomplete_delay = 400
+let g:compe.max_abbr_width = 100
+let g:compe.max_kind_width = 100
+let g:compe.max_menu_width = 100
+let g:compe.documentation = v:true
+
+let g:compe.source = {}
+let g:compe.source.path = v:true
+let g:compe.source.buffer = v:true
+let g:compe.source.calc = v:true
+let g:compe.source.nvim_lsp = v:true
+let g:compe.source.nvim_lua = v:true
+let g:compe.source.vsnip = v:true
+
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+
+" map <leader>y :GFiles<cr>
+if isdirectory(".git")
+  map <leader>y :GFiles --cached --others --exclude-standard<CR>
+else
+  map <leader>y :Files<CR>
+endif
+
 map <leader>e :Windows<cr>
 map <leader>s :vsplit<cr>
 map <leader>d :split<cr>
@@ -446,14 +596,11 @@ map <C-n> :NERDTreeToggle<CR>
 
 nnoremap <leader>j :m .+1<CR>==
 nnoremap <leader>k :m .-2<CR>==
-inoremap <leader>j <Esc>:m .+1<CR>==gi
-inoremap <leader>k <Esc>:m .-2<CR>==gi
 vnoremap <leader>j :m '>+1<CR>gv=gv
 vnoremap <leader>k :m '<-2<CR>gv=gv
 
 " greatest remap ever
 vnoremap <leader>p "_dP
-
 
 set splitbelow
 set splitright
@@ -471,14 +618,6 @@ set listchars=eol:↲,tab:⇥\ ,trail:~,extends:•,precedes:<,space:·
 set list
 
 set mouse=a
-
-highlight SpecialKey cterm=NONE ctermfg=238 gui=NONE guifg=#00005f
-highlight NonText cterm=NONE ctermfg=238 gui=NONE guifg=#00005f
-highlight IncSearch ctermbg=238 gui=NONE guibg=#49545F
-highlight Search ctermbg=238 gui=NONE guibg=#4C4E50
-
-highlight Warning cterm=NONE ctermfg=221 gui=NONE guifg=#ffd75f
-highlight WarningMsg cterm=undercurl ctermfg=221 gui=undercurl guifg=#ffd75f
 
 let g:nvim_typescript#default_signs = [
       \  {
