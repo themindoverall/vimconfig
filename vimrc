@@ -190,10 +190,10 @@ map <leader><leader>l <C-W>l
 map <leader><leader>c <C-W>c
 
 " Close the current buffer
-map <leader>bd :Bclose<cr>:tabclose<cr>gT
+map <leader><leader>bd :Bclose<cr>:tabclose<cr>gT
 
 " Close all the buffers
-map <leader>ba :bufdo bd<cr>
+map <leader><leader>ba :bufdo bd<cr>
 
 map <leader>l :bnext<cr>
 map <leader>h :bprevious<cr>
@@ -279,10 +279,10 @@ endif
 map <leader>ss :setlocal spell!<cr>
 
 " Shortcuts using <leader>
-map <leader>sn ]s
-map <leader>sp [s
-map <leader>sa zg
-map <leader>s? z=
+" map <leader>sn ]s
+" map <leader>sp [s
+" map <leader>sa zg
+" map <leader>s? z=
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -365,6 +365,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'AndrewRadev/splitjoin.vim'
+Plug 'bkad/CamelCaseMotion'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
@@ -399,6 +400,7 @@ highlight Search ctermbg=238 gui=NONE guibg=#444444
 " highlight Warning cterm=NONE ctermfg=221 gui=NONE guifg=#ffd75f
 " highlight WarningMsg cterm=undercurl ctermfg=221 gui=undercurl guifg=#ffd75f
 
+let g:camelcasemotion_key = '<leader>'
 
 lua << EOF
 local nvim_lsp = require('lspconfig')
@@ -454,7 +456,7 @@ end
 
 -- Use a loop to conveniently both setup defined servers 
 -- and map buffer local keybindings when the language server attaches
-local servers = { "gopls", "tsserver" }
+local servers = { "gopls", "tsserver", "solargraph" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup { on_attach = on_attach }
 end
@@ -534,6 +536,10 @@ inoremap <silent><expr> <CR>      compe#confirm('<CR>')
 inoremap <silent><expr> <C-e>     compe#close('<C-e>')
 inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
 inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 " map <leader>y :GFiles<cr>
 if isdirectory(".git")
