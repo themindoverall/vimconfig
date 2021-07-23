@@ -403,7 +403,7 @@ highlight LspDiagnosticsDefaultWarning cterm=NONE ctermfg=221 gui=NONE guifg=#ff
 highlight LspDiagnosticsDefaultInformation cterm=NONE ctermfg=111 gui=NONE guifg=#87afff
 highlight LspDiagnosticsDefaultHint cterm=NONE ctermfg=249 gui=NONE guifg=#b2b2b2
 highlight SpecialKey cterm=NONE ctermfg=238 gui=NONE guifg=#444444
-highlight NonText cterm=NONE ctermfg=238 gui=NONE guifg=#444444
+highlight NonText cterm=NONE ctermfg=238 ctermbg=NONE gui=NONE guifg=#444444 guibg=NONE
 highlight IncSearch ctermbg=238 gui=NONE guibg=#444444
 highlight Search ctermbg=238 gui=NONE guibg=#444444
 
