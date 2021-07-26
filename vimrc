@@ -308,7 +308,7 @@ map <leader>q :e ~/buffer<cr>
 map <leader>x :e ~/buffer.md<cr>
 
 " Toggle paste mode on and off
-map <leader>pp :setlocal paste!<cr>
+map <leader>P :setlocal paste!<cr>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -577,6 +577,7 @@ vnoremap <leader>k :m '<-2<CR>gv=gv
 
 " greatest remap ever
 vnoremap <leader>p "_dP
+nnoremap <leader>p viw"_dP
 
 set splitbelow
 set splitright
